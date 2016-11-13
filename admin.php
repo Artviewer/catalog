@@ -1,12 +1,13 @@
 <?php
 function __autoload($className) {
-    if (file_exists($className . '.php')) {
-        require_once $className . '.php';
+    if (file_exists('./lib/'.$className . '.php')) {
+        require_once './lib/'.$className . '.php';
         return true;
     }
     return false;
 }
-$products=$this->getAllProducts();
+$action=new Action;
+$products=$action->getAllProducts();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,23 +114,31 @@ $products=$this->getAllProducts();
                                     <th class="text-center">
                                         Фото
                                     </th>
+                                    <th>
+                                        Действие
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                <?php foreach($products as $value): ?>
-                                <tr id='addr0'>
+                                <?php foreach($products as $key=>$value): ?>
+                                    <tr id='addr0'>
                                     <td>
-                                        <?= $products['id'][$value] ?>
+                                        <?= $products[$key]['id'] ?>
                                     </td>
                                     <td>
-                                        <input type="text" name='name'  value='<?= $products['name'][$value] ?>' class="form-control"/>
+                                        <input type="text" name='name'  value='<?= $products[$key]['name'] ?>' class="form-control"/>
                                     </td>
                                     <td>
-                                        <input type="text" name='price' value='<?= $products['price'][$value] ?>' class="form-control"/>
+                                        <input type="text" name='price' value='<?= $products[$key]['price'] ?>' class="form-control"/>
                                     </td>
                                     <td>
-                                        <img width="50px" src="./images/<?= $products['image_url'][$value] ?>">
+                                        <img width="50px" src="<?= $products[$key]['image'] ?>">
+                                    </td>
+                                    <td>
+                                        <form>
+                                        <button name="del" formaction="process.php?action=del&id=<?= $products[$key]['id'] ?>" class="btn btn-xs btn-danger">Удалить</button>
+                                            <button formaction="process.php?action=page" id="" class="btn btn-xs btn-info">Редактировать</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <tr id='addr1'></tr>
@@ -140,15 +149,65 @@ $products=$this->getAllProducts();
                     </div>
                     <a id="add_row" class="btn btn-default pull-left">Add Row</a><a id='delete_row' class="pull-right btn btn-default">Delete Row</a>
                 </div>
+
+                <div>
+                    <form action="process.php?action=add" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <fieldset>
+
+                            <!-- Form Name -->
+                            <legend>Добавление товара</legend>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="name">Название товара</label>
+                                <div class="col-md-4">
+                                    <input id="name" name="name" type="text" placeholder="Введите имя товара" class="form-control input-md">
+
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="price">Цена</label>
+                                <div class="col-md-2">
+                                    <input id="price" name="price" type="text" placeholder="0" class="form-control input-md" required="">
+
+                                </div>
+                            </div>
+
+                            <!-- Textarea -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="description">Описание товара</label>
+                                <div class="col-md-4">
+                                    <textarea class="form-control" id="description" name="description"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- File Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="image">Фото товара</label>
+                                <div class="col-md-4">
+                                    <input id="image" name="image" class="input-file" type="file">
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="go"></label>
+                                <div class="col-md-4">
+                                    <button id="go" name="go" class="btn btn-success">Добавить</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+
             </div>
 
         </div>
     </div>
-
 </div>
-
-
-
 <!-- Modal -->
 <div id="add_project" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -169,9 +228,15 @@ $products=$this->getAllProducts();
                 <button type="button" class="cancel" data-dismiss="modal">Close</button>
                 <button type="button" class="add-project" data-dismiss="modal">Save</button>
             </div>
-        </div>
+</div>
+
+
+
+
+
 
     </div>
+
 </div>
 
 </body>
