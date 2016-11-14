@@ -7,7 +7,7 @@ function __autoload($className) {
     return false;
 }
 $action=new Action;
-$products=$action->getAllProducts();
+$products=$action->getAllProductsAdmin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -135,8 +135,11 @@ $products=$action->getAllProducts();
                                         <img width="50px" src="<?= $products[$key]['image'] ?>">
                                     </td>
                                     <td>
-                                        <form>
-                                        <button name="del" formaction="process.php?action=del&id=<?= $products[$key]['id'] ?>" class="btn btn-xs btn-danger">Удалить</button>
+                                        <form action="process.php?action=del" method="post">
+                                            <input type="hidden" name="id" value="<?= $products[$key]['id'] ?>">
+                                            <input type="submit"  class="btn btn-xs btn-danger" value="Удалить">
+                                            </form>
+                                            <form action>
                                             <button formaction="process.php?action=page" id="" class="btn btn-xs btn-info">Редактировать</button>
                                         </form>
                                     </td>

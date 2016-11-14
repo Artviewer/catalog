@@ -7,7 +7,8 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(data){
-
+                each
+                $('#products').append("sdfsdf");
             }
         });
         return false;

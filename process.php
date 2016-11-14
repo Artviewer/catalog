@@ -1,8 +1,6 @@
 <?php
 
-$name=filter_input(INPUT_POST,'name');
-$price=filter_input(INPUT_POST,'price');
-$description=filter_input(INPUT_POST,'description');
+
 $get=$_GET['action'];
 
 
@@ -13,23 +11,32 @@ function __autoload($className) {
     }
     return false;
 }
+//exit ($get);
 
-if($get='add') {
+if($get==='add') {
+    $name=filter_input(INPUT_POST,'name');
+    $price=filter_input(INPUT_POST,'price');
+    $description=filter_input(INPUT_POST,'description');
     $act=new Action();
-    if($act->validate()){
-        $image=$act->upload();
-    }
-    $act->addProduct($name, $description, $price, $image);
-    unset($get);
-    //Header("Location: index.php");
-}elseif($get='ajax'){
-    $query="SELECT * FROM products WHERE id<=";
+        if(isset($name)){
+            if($act->validate()) {
+                $image = $act->upload();
+            }
+            $act->addProduct($name, $description, $price, $image);
+            header("Location: index.php");
+        }
+}
+
+    if($get==='ajax'){
+    $query="SELECT * FROM products LIMIT 5, 5";
     header("Content-type: application/json");
     echo json_encode();
-}elseif($get='del'){
-    $del_id=$_GET['id'];
-    $query='SELECT * FROM products WHERE id="$id"';
+}
+
+if($get==='del'){
+    $act=new Action();
+    $del_id=$_POST['id'];
+    $query="DELETE  FROM products  WHERE id=$del_id";
     $act->db_connect()->query($query);
-    unset($get);
-    Header("Location: admin.php");
+    header("Location: admin.php");
 }

@@ -27,13 +27,14 @@ class Action {
         $this->db_connect()->query($query);
     }
 
-    public function delProducts($id){
+    public function delProduct($id){
         $query="DELETE * FROM products WHERE id ='$id'";
         $this->db_connect()->query($query);
     }
 
     public function getAllProducts(){
-        $query="SELECT * FROM products";
+        $sum=1;
+        $query="SELECT * FROM products LIMIT ";
         $products = array();
         foreach ($this->db_connect()->query($query) as $row) {
             $products[] = array(
@@ -46,6 +47,24 @@ class Action {
         }
         return $products;
     }
+
+
+    public function getAllProductsAdmin(){
+        $query="SELECT * FROM products ";
+        $products = array();
+        foreach ($this->db_connect()->query($query) as $row) {
+            $products[] = array(
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'price' => $row['price'],
+                'description' => $row['description'],
+                'image' => $row['image_url'],
+            );
+        }
+        return $products;
+    }
+    
+    
     public function validate(){
         //Првоеряет наличие файла и его размеры, допустимость по размеру
         $file=$_FILES['image'];
