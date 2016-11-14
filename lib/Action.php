@@ -17,7 +17,7 @@ class Action {
     CONST UPLOAD_DIR='images';
 
     public function db_connect(){
-        $dbh = new PDO('mysql:host=localhost;dbname=catalog', 'root', '455155');
+        $dbh = new PDO('mysql:host=localhost;dbname=catalog', 'root', '');
         return $dbh;
     }
 
